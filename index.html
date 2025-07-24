@@ -1,0 +1,1483 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlackoutX AI - Proteção Digital Avançada</title>
+    <meta name="description" content="BlackoutX AI - Sua assistente de privacidade digital avançada">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.1/umd/lucide.js"></script>
+    <style>
+        :root {
+            --bg-primary: #000000;
+            --bg-secondary: #080808;
+            --bg-tertiary: #0f0f0f;
+            --bg-accent: #141414;
+            --bg-card: #1a1a1a;
+            --border-primary: #1a1a1a;
+            --border-secondary: #222222;
+            --border-accent: #333333;
+            --text-primary: #ffffff;
+            --text-secondary: #e0e0e0;
+            --text-muted: #a0a0a0;
+            --text-dim: #666666;
+            --accent-primary: #ff0000;
+            --accent-secondary: #00ff41;
+            --accent-danger: #ff1744;
+            --accent-warning: #ff9800;
+            --accent-gradient: linear-gradient(135deg, #ff0000, #cc0000);
+            --brand-gradient: linear-gradient(135deg, #00ff41, #00cc33);
+            --dark-gradient: linear-gradient(135deg, #1a1a1a, #000000);
+            --success: #00ff41;
+            --warning: #ff9800;
+            --error: #ff1744;
+            --shadow-sm: 0 2px 4px 0 rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 8px -1px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 10px 20px -3px rgba(0, 0, 0, 0.5);
+            --shadow-xl: 0 20px 40px -5px rgba(0, 0, 0, 0.6);
+            --shadow-neon: 0 0 20px rgba(0, 255, 65, 0.3);
+            --shadow-red: 0 0 20px rgba(255, 0, 0, 0.3);
+            --blur-bg: rgba(0, 0, 0, 0.8);
+            --transition-fast: 0.15s ease;
+            --transition-normal: 0.2s ease;
+            --transition-slow: 0.3s ease;
+            --radius-sm: 6px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
+            --spacing-xs: 0.25rem;
+            --spacing-sm: 0.5rem;
+            --spacing-md: 0.75rem;
+            --spacing-lg: 1rem;
+            --spacing-xl: 1.5rem;
+            --sidebar-width: 280px;
+            --header-height: 70px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            height: 100vh;
+            overflow: hidden;
+            line-height: 1.6;
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .app {
+            display: flex;
+            height: 100vh;
+            position: relative;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            border-right: 1px solid var(--border-primary);
+            transition: transform var(--transition-slow), width var(--transition-slow);
+            overflow: hidden;
+            position: relative;
+            z-index: 40;
+            backdrop-filter: blur(20px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .sidebar.closed {
+            transform: translateX(-100%);
+        }
+
+        .sidebar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100px;
+            background: var(--brand-gradient);
+            opacity: 0.05;
+            pointer-events: none;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                height: 100vh;
+                z-index: 50;
+                box-shadow: var(--shadow-xl);
+            }
+        }
+
+        .sidebar-content {
+            padding: var(--spacing-xl);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-lg);
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--dark-gradient);
+            border: 2px solid var(--accent-secondary);
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-neon), inset 0 1px 0 rgba(0, 255, 65, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo-icon::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(45deg, transparent, rgba(0, 255, 65, 0.2), transparent);
+            transform: translateX(-100%);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .logo-text {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--accent-secondary);
+            text-shadow: 0 0 10px var(--accent-secondary);
+            font-family: 'Courier New', monospace;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .new-chat-btn {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            background: var(--dark-gradient);
+            border: 2px solid var(--accent-primary);
+            color: var(--text-primary);
+            padding: var(--spacing-md) var(--spacing-lg);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-red), inset 0 1px 0 rgba(255, 0, 0, 0.2);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .new-chat-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(45deg, transparent, rgba(255, 0, 0, 0.2), transparent);
+            transform: translateX(-100%);
+            transition: transform var(--transition-normal);
+        }
+
+        .new-chat-btn:hover::before {
+            transform: translateX(100%);
+        }
+
+        .new-chat-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-red), 0 0 30px rgba(255, 0, 0, 0.4);
+            border-color: #ff3333;
+        }
+
+        .new-chat-btn:active {
+            transform: translateY(0);
+        }
+
+        .conversations {
+            flex: 1;
+            overflow-y: auto;
+            margin: var(--spacing-sm) 0;
+        }
+
+        .conversations-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-dim);
+            margin-bottom: var(--spacing-md);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .conversation-item {
+            padding: var(--spacing-md);
+            border-radius: var(--radius-md);
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            margin-bottom: var(--spacing-sm);
+            color: var(--text-muted);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--border-primary);
+            background: var(--bg-secondary);
+            font-family: 'Courier New', monospace;
+        }
+
+        .conversation-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--accent-secondary);
+            transform: scaleY(0);
+            transition: transform var(--transition-normal);
+            box-shadow: 0 0 10px var(--accent-secondary);
+        }
+
+        .conversation-item:hover {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border-color: var(--border-secondary);
+            box-shadow: var(--shadow-md), inset 0 0 20px rgba(0, 255, 65, 0.05);
+        }
+
+        .conversation-item.active {
+            background: var(--bg-card);
+            color: var(--accent-secondary);
+            border-color: var(--accent-secondary);
+            box-shadow: var(--shadow-neon), inset 0 0 20px rgba(0, 255, 65, 0.1);
+            text-shadow: 0 0 5px var(--accent-secondary);
+        }
+
+        .conversation-item.active::before {
+            transform: scaleY(1);
+        }
+
+        .tools-section {
+            border-top: 1px solid var(--border-primary);
+            padding-top: var(--spacing-lg);
+        }
+
+        .tools-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-dim);
+            margin-bottom: var(--spacing-md);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .tool-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            padding: var(--spacing-md);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            margin-bottom: var(--spacing-sm);
+            border: 1px solid var(--border-primary);
+            background: var(--bg-secondary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tool-item::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 65, 0.1), transparent);
+            transition: left var(--transition-normal);
+        }
+
+        .tool-item:hover::after {
+            left: 100%;
+        }
+
+        .tool-item:hover {
+            background: var(--bg-card);
+            border-color: var(--accent-secondary);
+            transform: translateX(4px);
+            box-shadow: var(--shadow-neon);
+        }
+
+        .tool-icon {
+            color: var(--accent-secondary);
+            transition: all var(--transition-normal);
+            filter: drop-shadow(0 0 5px var(--accent-secondary));
+        }
+
+        .tool-item:hover .tool-icon {
+            transform: scale(1.1);
+            filter: drop-shadow(0 0 10px var(--accent-secondary));
+        }
+
+        .tool-name {
+            font-size: 0.875rem;
+            color: var(--text-primary);
+            font-weight: 600;
+            font-family: 'Courier New', monospace;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .tool-desc {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            font-family: 'Courier New', monospace;
+        }
+
+        .settings-btn {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            color: var(--text-muted);
+            background: none;
+            border: 1px solid transparent;
+            padding: var(--spacing-md);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            width: 100%;
+            margin-top: auto;
+        }
+
+        .settings-btn:hover {
+            color: var(--text-primary);
+            background: var(--bg-tertiary);
+            border-color: var(--border-secondary);
+        }
+
+        /* Main Chat Area */
+        .main-chat {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+        }
+
+        /* Header */
+        .header {
+            background: var(--blur-bg);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-primary);
+            padding: var(--spacing-lg) var(--spacing-xl);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: var(--header-height);
+            position: relative;
+            z-index: 30;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-secondary), transparent);
+            opacity: 0.3;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+
+        .menu-btn {
+            background: none;
+            border: 1px solid transparent;
+            color: var(--text-primary);
+            padding: var(--spacing-sm);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            display: none;
+        }
+
+        .menu-btn:hover {
+            background: var(--bg-tertiary);
+            border-color: var(--border-secondary);
+        }
+
+        @media (max-width: 768px) {
+            .menu-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+
+        .header-title {
+            font-size: 1.375rem;
+            font-weight: 700;
+            background: var(--brand-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .status {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-sm) var(--spacing-md);
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-secondary);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--success);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+            box-shadow: 0 0 10px var(--success);
+        }
+
+        .status-text {
+            color: var(--success);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        @keyframes pulse {
+            0%, 100% { 
+                opacity: 1; 
+                transform: scale(1);
+            }
+            50% { 
+                opacity: 0.7; 
+                transform: scale(1.1);
+            }
+        }
+
+        /* Messages */
+        .messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: var(--spacing-xl);
+            scroll-behavior: smooth;
+        }
+
+        .message {
+            margin-bottom: var(--spacing-xl);
+            animation: slideUp 0.3s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.user {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .message.assistant {
+            display: flex;
+            justify-content: flex-start;
+        }
+
+        .message-content {
+            max-width: min(768px, 85%);
+        }
+
+        .message.assistant .message-content {
+            width: 100%;
+        }
+
+        .assistant-header {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .assistant-avatar {
+            width: 28px;
+            height: 28px;
+            background: var(--brand-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-md);
+        }
+
+        .assistant-name {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .message-bubble {
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-lg);
+            position: relative;
+            backdrop-filter: blur(10px);
+            line-height: 1.6;
+        }
+
+        .message.user .message-bubble {
+            background: var(--accent-gradient);
+            color: var(--text-primary);
+            box-shadow: var(--shadow-md);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .message.assistant .message-bubble {
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-secondary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .message-time {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            margin-top: var(--spacing-xs);
+            padding: 0 var(--spacing-xs);
+            opacity: 0.8;
+        }
+
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            padding: var(--spacing-md) var(--spacing-lg);
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-secondary);
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent-secondary);
+            border-radius: 50%;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing {
+            0%, 60%, 100% {
+                transform: scale(0.8);
+                opacity: 0.5;
+            }
+            30% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* Input Area */
+        .input-area {
+            border-top: 1px solid var(--border-primary);
+            padding: var(--spacing-xl);
+            background: var(--blur-bg);
+            backdrop-filter: blur(20px);
+            position: relative;
+        }
+
+        .input-area::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-secondary), transparent);
+            opacity: 0.3;
+        }
+
+        .input-container {
+            max-width: 768px;
+            margin: 0 auto;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .message-input {
+            width: 100%;
+            background: var(--bg-tertiary);
+            border: 2px solid var(--border-secondary);
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-lg) 3.5rem var(--spacing-lg) var(--spacing-lg);
+            color: var(--text-primary);
+            font-size: 1rem;
+            outline: none;
+            transition: all var(--transition-normal);
+            font-family: inherit;
+            resize: none;
+            min-height: 52px;
+            max-height: 120px;
+        }
+
+        .message-input::placeholder {
+            color: var(--text-dim);
+        }
+
+        .message-input:focus {
+            border-color: var(--accent-secondary);
+            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
+            background: var(--bg-accent);
+        }
+
+        .send-btn {
+            position: absolute;
+            right: 8px;
+            background: var(--accent-gradient);
+            border: none;
+            padding: var(--spacing-md);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-md);
+        }
+
+        .send-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .send-btn:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        .send-btn:disabled {
+            background: var(--bg-accent);
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+        .suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-lg);
+        }
+
+        .suggestion-btn {
+            padding: var(--spacing-sm) var(--spacing-lg);
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-secondary);
+            border-radius: var(--radius-xl);
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            backdrop-filter: blur(10px);
+        }
+
+        .suggestion-btn:hover {
+            background: var(--bg-accent);
+            color: var(--text-primary);
+            border-color: var(--accent-secondary);
+            transform: translateY(-2px);
+        }
+
+        .disclaimer {
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            margin-top: var(--spacing-lg);
+            opacity: 0.8;
+        }
+
+        /* Scrollbar Customization */
+        .messages::-webkit-scrollbar,
+        .conversations::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .messages::-webkit-scrollbar-track,
+        .conversations::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+            border-radius: 3px;
+        }
+
+        .messages::-webkit-scrollbar-thumb,
+        .conversations::-webkit-scrollbar-thumb {
+            background: var(--bg-tertiary);
+            border-radius: 3px;
+            transition: background var(--transition-normal);
+        }
+
+        .messages::-webkit-scrollbar-thumb:hover,
+        .conversations::-webkit-scrollbar-thumb:hover {
+            background: var(--border-secondary);
+        }
+
+        /* Loading States */
+        .loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        /* Overlay for mobile */
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 30;
+            opacity: 0;
+            visibility: hidden;
+            transition: all var(--transition-normal);
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .input-area {
+                padding: var(--spacing-lg);
+            }
+            
+            .messages {
+                padding: var(--spacing-lg);
+            }
+            
+            .header {
+                padding: var(--spacing-lg);
+            }
+            
+            .message-content {
+                max-width: 95%;
+            }
+        }
+
+        /* Accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* Focus visible for better accessibility */
+        .new-chat-btn:focus-visible,
+        .conversation-item:focus-visible,
+        .tool-item:focus-visible,
+        .suggestion-btn:focus-visible,
+        .send-btn:focus-visible,
+        .menu-btn:focus-visible,
+        .settings-btn:focus-visible {
+            outline: 2px solid var(--accent-secondary);
+            outline-offset: 2px;
+        }
+
+        .message-input:focus-visible {
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <!-- Matrix Background Effect -->
+        <div class="matrix-bg"></div>
+        
+        <!-- Mobile Overlay -->
+        <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+        
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar" role="complementary" aria-label="Navegação lateral">
+            <div class="sidebar-content">
+                <div class="logo">
+                    <div class="logo-icon" aria-hidden="true">
+                        <i data-lucide="shield" style="width: 20px; height: 20px;"></i>
+                    </div>
+                    <span class="logo-text">BlackoutX AI</span>
+                </div>
+                
+                <button class="new-chat-btn" onclick="startNewConversation()" aria-label="Iniciar nova conversa">
+                    <i data-lucide="plus" style="width: 16px; height: 16px;" aria-hidden="true"></i>
+                    <span>Nova conversa</span>
+                </button>
+                
+                <div class="conversations" role="navigation" aria-label="Conversas recentes">
+                    <h3 class="conversations-title">Conversas Recentes</h3>
+                    <div class="conversation-item active" tabindex="0" role="button" aria-selected="true">
+                        Remoção de dados pessoais
+                    </div>
+                    <div class="conversation-item" tabindex="0" role="button" aria-selected="false">
+                        Análise de pegada digital
+                    </div>
+                    <div class="conversation-item" tabindex="0" role="button" aria-selected="false">
+                        Configuração de VPN
+                    </div>
+                    <div class="conversation-item" tabindex="0" role="button" aria-selected="false">
+                        Limpeza de dados do Google
+                    </div>
+                    <div class="conversation-item" tabindex="0" role="button" aria-selected="false">
+                        Proteção contra rastreamento
+                    </div>
+                </div>
+                
+                <div class="tools-section">
+                    <h3 class="tools-title">Ferramentas Especializadas</h3>
+                    <div class="tool-item" tabindex="0" role="button" onclick="selectTool('blackout')">
+                        <i data-lucide="shield" class="tool-icon" style="width: 18px; height: 18px;" aria-hidden="true"></i>
+                        <div>
+                            <div class="tool-name">Blackout Scanner</div>
+                            <div class="tool-desc">Análise completa de pegada digital</div>
+                        </div>
+                    </div>
+                    <div class="tool-item" tabindex="0" role="button" onclick="selectTool('eraser')">
+                        <i data-lucide="trash-2" class="tool-icon" style="width: 18px; height: 18px;" aria-hidden="true"></i>
+                        <div>
+                            <div class="tool-name">Data Eraser</div>
+                            <div class="tool-desc">Remoção automática de dados</div>
+                        </div>
+                    </div>
+                    <div class="tool-item" tabindex="0" role="button" onclick="selectTool('shadowwipe')">
+                        <i data-lucide="eye-off" class="tool-icon" style="width: 18px; height: 18px;" aria-hidden="true"></i>
+                        <div>
+                            <div class="tool-name">ShadowWipe</div>
+                            <div class="tool-desc">Limpeza de rastros digitais</div>
+                        </div>
+                    </div>
+                    <div class="tool-item" tabindex="0" role="button" onclick="selectTool('guardian')">
+                        <i data-lucide="lock" class="tool-icon" style="width: 18px; height: 18px;" aria-hidden="true"></i>
+                        <div>
+                            <div class="tool-name">Privacy Guardian</div>
+                            <div class="tool-desc">Proteção em tempo real</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="settings-btn" onclick="openSettings()" aria-label="Abrir configurações">
+                    <i data-lucide="settings" style="width: 16px; height: 16px;" aria-hidden="true"></i>
+                    <span style="font-size: 0.875rem;">Configurações</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Chat Area -->
+        <main class="main-chat" role="main">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-left">
+                    <button class="menu-btn" onclick="toggleSidebar()" aria-label="Alternar menu lateral">
+                        <i data-lucide="menu" style="width: 20px; height: 20px;" aria-hidden="true"></i>
+                    </button>
+                    <h1 class="header-title glitch" data-text="BLACKOUTX AI">BLACKOUTX AI</h1>
+                </div>
+                <div class="status" role="status" aria-label="Status do sistema">
+                    <div class="status-dot" aria-hidden="true"></div>
+                    <span class="status-text">SISTEMA ONLINE</span>
+                </div>
+            </header>
+
+            <!-- Messages -->
+            <div class="messages" id="messages" role="log" aria-live="polite" aria-label="Histórico de mensagens">
+                <div class="message assistant">
+                    <div class="message-content">
+                        <div class="assistant-header">
+                            <div class="assistant-avatar" aria-hidden="true">
+                                <i data-lucide="shield" style="width: 14px; height: 14px;"></i>
+                            </div>
+                            <span class="assistant-name">BlackoutX AI</span>
+                        </div>
+                        <div class="message-bubble">
+                            🛡️ <strong>SISTEMA BLACKOUTX INICIALIZADO</strong><br><br>
+                            <span style="color: #00ff41;">[CONEXÃO SEGURA ESTABELECIDA]</span><br><br>
+                            Sou sua IA especializada em <em>guerra digital</em> e <em>proteção avançada</em>.<br><br>
+                            <strong>PROTOCOLOS DISPONÍVEIS:</strong><br>
+                            • <span style="color: #ff0000;">⚡ SCAN DE PEGADA DIGITAL</span><br>
+                            • <span style="color: #ff0000;">🗑️ ELIMINAÇÃO DE DADOS</span><br>
+                            • <span style="color: #ff0000;">🔒 PROTEÇÃO FANTASMA</span><br>
+                            • <span style="color: #ff0000;">👁️ MONITORAMENTO DEEP WEB</span><br>
+                            • <span style="color: #ff0000;">🥷 MODO STEALTH TOTAL</span><br><br>
+                            <strong style="color: #00ff41;">[AGUARDANDO COMANDOS...]</strong>
+                        </div>
+                        <div class="message-time" id="initial-time"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Input Area -->
+            <div class="input-area">
+                <div class="input-container">
+                    <div class="input-wrapper">
+                        <textarea
+                            id="messageInput"
+                            class="message-input"
+                            placeholder="[DIGITE SEU COMANDO DE SEGURANÇA...]"
+                            rows="1"
+                            onkeydown="handleKeyDown(event)"
+                            oninput="handleInput(event)"
+                            aria-label="Campo de mensagem"
+                        ></textarea>
+                        <button class="send-btn" onclick="sendMessage()" id="sendBtn" aria-label="Enviar mensagem">
+                            <i data-lucide="send" style="width: 16px; height: 16px;" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="suggestions" role="group" aria-label="Sugestões de consulta">
+                        <button class="suggestion-btn" onclick="setSuggestion('EXECUTAR SCAN COMPLETO DE PEGADA DIGITAL')" tabindex="0">
+                            🔍 SCAN TOTAL
+                        </button>
+                        <button class="suggestion-btn" onclick="setSuggestion('ELIMINAR DADOS DE MOTORES DE BUSCA')" tabindex="0">
+                            🗑️ APAGAR RASTROS
+                        </button>
+                        <button class="suggestion-btn" onclick="setSuggestion('ATIVAR PROTEÇÃO MÁXIMA')" tabindex="0">
+                            🛡️ MODO FANTASMA
+                        </button>
+                        <button class="suggestion-btn" onclick="setSuggestion('VERIFICAR VAZAMENTOS NA DARK WEB')" tabindex="0">
+                            ⚠️ DEEP SCAN
+                        </button>
+                        <button class="suggestion-btn" onclick="setSuggestion('CRIAR IDENTIDADE ANÔNIMA')" tabindex="0">
+                            🥷 STEALTH MODE
+                        </button>
+                    </div>
+                    
+                    <p class="disclaimer">
+                        ⚠️ BLACKOUTX AI UTILIZA PROTOCOLOS MILITARES DE SEGURANÇA • TODAS AS COMUNICAÇÕES SÃO CRIPTOGRAFADAS • VERIFIQUE COMANDOS CRÍTICOS
+                    </p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Global state management
+        const AppState = {
+            messageId: 1,
+            sidebarOpen: window.innerWidth > 768,
+            isTyping: false,
+            currentTool: null,
+            conversationHistory: [],
+            settings: {
+                theme: 'dark',
+                language: 'pt-BR',
+                notifications: true
+            }
+        };
+
+        // Enhanced AI responses with more realistic privacy-focused content
+        const AIResponses = {
+            general: [
+                '🔍 <strong>Análise Iniciada</strong><br><br>Escaneando sua pegada digital... Encontrados <span style="color: #E63946; font-weight: 600;">47 pontos de exposição</span> em:<br>• 12 sites de busca<br>• 8 redes sociais<br>• 15 bancos de dados públicos<br>• 12 serviços de terceiros<br><br>Iniciando protocolo de limpeza automática...',
+                
+                '🛡️ <strong>Protocolo BlackoutX Ativado</strong><br><br>Detectei <span style="color: #f59e0b; font-weight: 600;">atividade suspeita</span> relacionada aos seus dados:<br>• 3 tentativas de coleta não autorizada<br>• 7 rastreadores ativos bloqueados<br>• 2 vazamentos potenciais identificados<br><br>Implementando contramedidas de proteção...',
+                
+                '⚡ <strong>Deep Web Scan Completo</strong><br><br>Resultados da varredura avançada:<br>• <span style="color: #10b981;">✅ Nenhum dado sensível exposto</span><br>• <span style="color: #E63946;">❌ CPF encontrado em 2 bases</span><br>• <span style="color: #f59e0b;">⚠️ Email em 5 listas de spam</span><br><br>Executando remoção automática das fontes identificadas...',
+                
+                '🔒 <strong>Sistema Guardian Ativo</strong><br><br>Sua proteção em tempo real está funcionando:<br>• 156 tentativas de rastreamento bloqueadas hoje<br>• 23 cookies maliciosos removidos<br>• 8 fingerprinting attempts neutralizados<br><br>Nível de anonimato atual: <span style="color: #06b6d4; font-weight: 600;">MÁXIMO</span>',
+                
+                '🗑️ <strong>Data Eraser - Missão Concluída</strong><br><br>Limpeza automática finalizada com sucesso:<br>• 34 registros removidos do Google<br>• 12 perfis apagados de sites de busca<br>• 89 referências eliminadas de agregadores<br><br>Sua pegada digital foi reduzida em <span style="color: #10b981; font-weight: 600;">78%</span>!'
+            ],
+            
+            tools: {
+                blackout: '🔍 <strong>Blackout Scanner Ativado</strong><br><br>Iniciando varredura profunda da sua presença digital...<br>• Escaneando motores de busca<br>• Verificando redes sociais<br>• Analisando bancos de dados públicos<br>• Checando dark web<br><br>Tempo estimado: 2-3 minutos',
+                
+                eraser: '🗑️ <strong>Data Eraser Executando</strong><br><br>Removendo seus dados de fontes públicas...<br>• Solicitando remoção do Google<br>• Limpando sites de busca de pessoas<br>• Apagando caches de agregadores<br>• Notificando brokers de dados<br><br>Processo em andamento...',
+                
+                shadowwipe: '👻 <strong>ShadowWipe Iniciado</strong><br><br>Eliminando rastros digitais profundos...<br>• Limpando logs de navegação<br>• Removendo cookies persistentes<br>• Apagando digital fingerprints<br>• Mascarando device ID<br><br>Você está se tornando invisível...',
+                
+                guardian: '🛡️ <strong>Privacy Guardian Online</strong><br><br>Proteção avançada ativada:<br>• Firewall de privacidade: ATIVO<br>• Bloqueio de rastreadores: MÁXIMO<br>• Criptografia de dados: AES-256<br>• Túnel VPN: Conectado<br><br>Você está protegido!'
+            },
+            
+            suggestions: {
+                'Analisar minha pegada digital completa': '🔍 <strong>Análise Detalhada da Pegada Digital</strong><br><br>Executando scan completo...<br><br><strong>Resultados Preliminares:</strong><br>• Nome completo: Encontrado em 23 fontes<br>• Telefone: Exposto em 8 sites<br>• Email: Presente em 15 bancos<br>• Endereço: Disponível em 4 locais<br><br>Gerando relatório completo...',
+                
+                'Remover meus dados de sites de busca': '🗑️ <strong>Remoção de Dados Públicos</strong><br><br>Iniciando processo de remoção...<br><br>Alvos identificados:<br>• Google: 12 resultados marcados<br>• Bing: 8 entradas encontradas<br>• DuckDuckGo: 3 referências<br>• Sites especializados: 15 perfis<br><br>Enviando solicitações de remoção...',
+                
+                'Configurar proteção máxima de privacidade': '🛡️ <strong>Configuração de Proteção Máxima</strong><br><br>Implementando camadas de segurança:<br><br>✅ VPN multi-hop ativada<br>✅ DNS criptografado configurado<br>✅ Firewall de aplicações ativo<br>✅ Bloqueador de scripts maliciosos<br>✅ Proteção contra fingerprinting<br><br>Nível de proteção: <span style="color: #10b981; font-weight: 600;">ELITE</span>',
+                
+                'Verificar vazamentos de dados recentes': '⚠️ <strong>Verificação de Vazamentos</strong><br><br>Escaneando bancos de dados comprometidos...<br><br><strong>Alertas Encontrados:</strong><br>• Vazamento XYZ Corp (2024): Email exposto<br>• Breach ABC Service (2023): Senha antiga<br>• Leak DEF Platform (2024): Dados pessoais<br><br>Recomendações de segurança sendo geradas...',
+                
+                'Criar identidade digital anônima': '🥷 <strong>Criação de Identidade Anônima</strong><br><br>Gerando nova identidade digital...<br><br>Componentes criados:<br>• Email temporário seguro<br>• Número virtual protegido<br>• Perfis de navegação isolados<br>• Carteiras cripto anônimas<br>• Contas de serviços descartáveis<br><br>Sua nova identidade está pronta!'
+            }
+        };
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+        });
+
+        function initializeApp() {
+            // Initialize Lucide icons
+            lucide.createIcons();
+            
+            // Set initial timestamp
+            updateTimestamp('initial-time');
+            
+            // Setup event listeners
+            setupEventListeners();
+            
+            // Update UI state
+            updateSendButton();
+            
+            console.log('BlackoutX AI initialized successfully');
+        }
+
+        function setupEventListeners() {
+            // Auto-resize textarea
+            const textarea = document.getElementById('messageInput');
+            textarea.addEventListener('input', autoResizeTextarea);
+            
+            // Keyboard shortcuts
+            document.addEventListener('keydown', handleGlobalKeyboard);
+            
+            // Window resize handler
+            window.addEventListener('resize', handleWindowResize);
+            
+            // Click outside sidebar to close (mobile)
+            document.addEventListener('click', handleOutsideClick);
+        }
+
+        function updateTimestamp(elementId) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.textContent = new Date().toLocaleTimeString('pt-BR', {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+            }
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+            
+            AppState.sidebarOpen = !AppState.sidebarOpen;
+            
+            if (AppState.sidebarOpen) {
+                sidebar.classList.remove('closed');
+                overlay.classList.add('active');
+            } else {
+                sidebar.classList.add('closed');
+                overlay.classList.remove('active');
+            }
+        }
+
+        function closeSidebar() {
+            if (!AppState.sidebarOpen) return;
+            
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+            
+            AppState.sidebarOpen = false;
+            sidebar.classList.add('closed');
+            overlay.classList.remove('active');
+        }
+
+        function handleKeyDown(event) {
+            if (event.key === 'Enter') {
+                if (event.shiftKey) {
+                    // Allow new line with Shift+Enter
+                    return;
+                } else {
+                    // Send message with Enter
+                    event.preventDefault();
+                    sendMessage();
+                }
+            }
+        }
+
+        function handleInput(event) {
+            updateSendButton();
+            autoResizeTextarea(event);
+        }
+
+        function autoResizeTextarea(event) {
+            const textarea = event.target;
+            textarea.style.height = 'auto';
+            const newHeight = Math.min(textarea.scrollHeight, 120);
+            textarea.style.height = newHeight + 'px';
+        }
+
+        function handleGlobalKeyboard(event) {
+            // Ctrl/Cmd + / to focus input
+            if ((event.ctrlKey || event.metaKey) && event.key === '/') {
+                event.preventDefault();
+                document.getElementById('messageInput').focus();
+            }
+            
+            // Escape to close sidebar on mobile
+            if (event.key === 'Escape' && window.innerWidth <= 768) {
+                closeSidebar();
+            }
+        }
+
+        function handleWindowResize() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+            
+            if (window.innerWidth > 768) {
+                AppState.sidebarOpen = true;
+                sidebar.classList.remove('closed');
+                overlay.classList.remove('active');
+            } else if (AppState.sidebarOpen) {
+                overlay.classList.add('active');
+            }
+        }
+
+        function handleOutsideClick(event) {
+            if (window.innerWidth <= 768 && AppState.sidebarOpen) {
+                const sidebar = document.getElementById('sidebar');
+                if (!sidebar.contains(event.target) && !event.target.closest('.menu-btn')) {
+                    closeSidebar();
+                }
+            }
+        }
+
+        function setSuggestion(text) {
+            const input = document.getElementById('messageInput');
+            input.value = text;
+            input.focus();
+            updateSendButton();
+            autoResizeTextarea({ target: input });
+        }
+
+        function selectTool(toolName) {
+            AppState.currentTool = toolName;
+            const input = document.getElementById('messageInput');
+            
+            const toolMessages = {
+                'blackout': 'Executar scan completo da minha pegada digital',
+                'eraser': 'Remover todos os meus dados de bancos públicos',
+                'shadowwipe': 'Limpar todos os meus rastros digitais',
+                'guardian': 'Ativar proteção máxima em tempo real'
+            };
+            
+            setSuggestion(toolMessages[toolName] || 'Ativar ferramenta selecionada');
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            
+            if (!message || AppState.isTyping) return;
+            
+            // Add user message
+            addMessage('user', message);
+            
+            // Store in conversation history
+            AppState.conversationHistory.push({
+                type: 'user',
+                content: message,
+                timestamp: new Date()
+            });
+            
+            // Clear input and reset
+            input.value = '';
+            input.style.height = 'auto';
+            updateSendButton();
+            
+            // Show typing indicator
+            showTypingIndicator();
+            
+            // Generate and show AI response
+            setTimeout(() => {
+                const aiResponse = generateAIResponse(message);
+                hideTypingIndicator();
+                addMessage('assistant', aiResponse);
+                
+                AppState.conversationHistory.push({
+                    type: 'assistant',
+                    content: aiResponse,
+                    timestamp: new Date()
+                });
+            }, 1500 + Math.random() * 1000); // Realistic delay
+        }
+
+        function addMessage(type, content) {
+            const messagesContainer = document.getElementById('messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
+            messageDiv.setAttribute('data-message-id', ++AppState.messageId);
+            
+            const timestamp = new Date().toLocaleTimeString('pt-BR', {
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            
+            if (type === 'assistant') {
+                messageDiv.innerHTML = `
+                    <div class="message-content">
+                        <div class="assistant-header">
+                            <div class="assistant-avatar" aria-hidden="true">
+                                <i data-lucide="shield" style="width: 14px; height: 14px;"></i>
+                            </div>
+                            <span class="assistant-name">BlackoutX AI</span>
+                        </div>
+                        <div class="message-bubble">${content}</div>
+                        <div class="message-time">${timestamp}</div>
+                    </div>
+                `;
+            } else {
+                messageDiv.innerHTML = `
+                    <div class="message-content">
+                        <div class="message-bubble">${escapeHtml(content)}</div>
+                        <div class="message-time">${timestamp}</div>
+                    </div>
+                `;
+            }
+            
+            messagesContainer.appendChild(messageDiv);
+            
+            // Re-initialize Lucide icons
+            lucide.createIcons();
+            
+            // Smooth scroll to bottom
+            requestAnimationFrame(() => {
+                messagesContainer.scrollTo({
+                    top: messagesContainer.scrollHeight,
+                    behavior: 'smooth'
+                });
+            });
+        }
+
+        function showTypingIndicator() {
+            if (AppState.isTyping) return;
+            
+            AppState.isTyping = true;
+            const messagesContainer = document.getElementById('messages');
+            
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'message assistant';
+            typingDiv.id = 'typing-indicator';
+            typingDiv.innerHTML = `
+                <div class="message-content">
+                    <div class="assistant-header">
+                        <div class="assistant-avatar" aria-hidden="true">
+                            <i data-lucide="shield" style="width: 14px; height: 14px;"></i>
+                        </div>
+                        <span class="assistant-name">BlackoutX AI</span>
+                    </div>
+                    <div class="typing-indicator">
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                    </div>
+                </div>
+            `;
+            
+            messagesContainer.appendChild(typingDiv);
+            lucide.createIcons();
+            
+            messagesContainer.scrollTo({
+                top: messagesContainer.scrollHeight,
+                behavior: 'smooth'
+            });
+        }
+
+        function hideTypingIndicator() {
+            AppState.isTyping = false;
+            const typingIndicator = document.getElementById('typing-indicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+        }
+
+        function generateAIResponse(userInput) {
+            const input = userInput.toLowerCase();
+            
+            // Check for specific suggestions first
+            for (const [suggestion, response] of Object.entries(AIResponses.suggestions)) {
+                if (input.includes(suggestion.toLowerCase())) {
+                    return response;
+                }
+            }
+            
+            // Check for tool-specific responses
+            if (AppState.currentTool && AIResponses.tools[AppState.currentTool]) {
+                AppState.currentTool = null; // Reset after use
+                return AIResponses.tools[AppState.currentTool];
+            }
+            
+            // Check for keywords
+            const keywords = {
+                'pegada digital': AIResponses.general[0],
+                'dados pessoais': AIResponses.general[1],
+                'vazamento': AIResponses.general[2],
+                'proteção': AIResponses.general[3],
+                'remover': AIResponses.general[4],
+                'scan': AIResponses.general[0],
+                'limpeza': AIResponses.general[4],
+                'vpn': AIResponses.general[3],
+                'privacidade': AIResponses.general[1]
+            };
+            
+            for (const [keyword, response] of Object.entries(keywords)) {
+                if (input.includes(keyword)) {
+                    return response;
+                }
+            }
+            
+            // Default response
+            return AIResponses.general[Math.floor(Math.random() * AIResponses.general.length)];
+        }
+
+        function startNewConversation() {
+            const messagesContainer = document.getElementById('messages');
+            
+            // Clear conversation history
+            AppState.conversationHistory = [];
+            AppState.messageId = 1;
+            
+            // Reset messages
+            messagesContainer.innerHTML = `
+                <div class="message assistant">
+                    <div class="message-content">
+                        <div class="assistant-header">
+                            <div class="assistant-avatar" aria-hidden="true">
+                                <i data-lucide="shield" style="width: 14px; height: 14px;"></i>
+                            </div>
+                            <span class="assistant-name">BlackoutX AI</span>
+                        </div>
+                        <div class="message-bubble">
+                            🛡️ <strong>Nova Sessão Iniciada</strong><br><br>
+                            Olá! Sou o BlackoutX AI, sua assistente especializada em <em>proteção digital avançada</em>.<br><br>
+                            Como posso ajudá-lo a proteger sua privacidade hoje?
+                        </div>
+                        <div class="message-time">${new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</div>
+                    </div>
+                </div>
+            `;
+            
+            lucide.createIcons();
+            
+            // Clear input
+            const input = document.getElementById('messageInput');
+            input.value = '';
+            input.style.height = 'auto';
+            updateSendButton();
+            
+            // Focus input
+            input.focus();
+        }
+
+        function updateSendButton() {
+            const input = document.getElementById('messageInput');
+            const sendBtn = document.getElementById('sendBtn');
+            
+            const hasContent = input.value.trim().length > 0;
+            sendBtn.disabled = !hasContent || AppState.isTyping;
+            
+            // Update button appearance
+            if (hasContent && !AppState.isTyping) {
+                sendBtn.style.opacity = '1';
+                sendBtn.style.transform = 'scale(1)';
+            } else {
+                sendBtn.style.opacity = '0.5';
+                sendBtn.style.transform = 'scale(0.95)';
+            }
+        }
+
+        function openSettings() {
+            // Placeholder for settings modal
+            addMessage('assistant', '⚙️ <strong>Configurações do Sistema</strong><br><br>Painel de configurações em desenvolvimento...<br><br>Configurações atuais:<br>• Nível de proteção: MÁXIMO<br>• Atualizações automáticas: ATIVO<br>• Notificações: HABILITADAS<br>• Modo stealth: ATIVO');
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Enhanced conversation item interaction
+        document.querySelectorAll('.conversation-item').forEach(item => {
+            item.addEventListener('click', function() {
+                // Remove active from all items
+                document.querySelectorAll('.conversation-item').forEach(i => {
+                    i.classList.remove('active');
+                    i.setAttribute('aria-selected', 'false');
+                });
+                
+                // Add active to clicked item
+                this.classList.add('active');
+                this.setAttribute('aria-selected', 'true');
+                
+                // Simulate loading conversation (placeholder)
+                const title = this.textContent.trim();
+                addMessage('assistant', `📂 <strong>Carregando Conversa</strong><br><br>Restaurando sessão: "${title}"<br><br>Histórico recuperado com sucesso!`);
+            });
+        });
+
+        // Performance optimization: Debounce input updates
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        // Apply debouncing to input handler
+        const debouncedInputHandler = debounce(handleInput, 100);
+        document.getElementById('messageInput').addEventListener('input', debouncedInputHandler);
+
+        // Initial state setup
+        updateSendButton();
+    </script>
+</body>
+</html>
