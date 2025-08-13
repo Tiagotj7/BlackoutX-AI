@@ -1,0 +1,47 @@
+{
+    "intents": [
+      {
+        "tag": "saudacao",
+        "patterns": [
+          "Olá",
+          "Oi",
+          "E aí",
+          "Bom dia",
+          "Boa tarde",
+          "Boa noite"
+        ],
+        "responses": [
+          "🛡️ <strong>Sistema BlackoutX Ativado</strong><br><br>Olá, agente. Como posso ajudar na sua segurança digital hoje?",
+          "⚡ <strong>Conexão Segura Estabelecida</strong><br><br>Saudações. Qual operação deseja executar?"
+        ]
+      },
+      {
+        "tag": "pegada_digital",
+        "patterns": [
+          "Analisar minha pegada digital",
+          "Como estou exposto online",
+          "Verificar meus rastros",
+          "Quem tem meus dados",
+          "Scan completo"
+        ],
+        "responses": [
+          "🔍 <strong>Análise de Pegada Digital Iniciada</strong><br><br>Executando varredura em:<br>• Motores de busca<br>• Redes sociais<br>• Bancos de dados públicos<br><br><span style='color:#00ff41'>[ESTIMATIVA: 2-3 MINUTOS]</span>",
+          "⚠️ <strong>Scanner Ativado</strong><br><br>Detectando pontos de exposição...<br><br>Recomendação: Ative o protocolo ShadowWipe após a análise"
+        ]
+      },
+      {
+        "tag": "remocao_dados",
+        "patterns": [
+          "Remover meus dados",
+          "Quero ser esquecido",
+          "Apagar informações",
+          "Limpar rastros",
+          "Direito ao esquecimento"
+        ],
+        "responses": [
+          "🗑️ <strong>Protocolo Data Eraser</strong><br><br>Iniciando remoção em:<br>• 12 sites de busca<br>• 8 redes sociais<br>• 15 agregadores de dados<br><br><span style='color:#ff0000'>[CONFIRMAR OPERAÇÃO?]</span>",
+          "⚠️ <strong>Aviso: Remoção Permanente</strong><br><br>Esta operação não pode ser desfeita. Confirmar eliminação de dados?"
+        ]
+      }
+    ]
+  }
