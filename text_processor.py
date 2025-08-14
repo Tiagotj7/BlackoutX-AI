@@ -2,11 +2,13 @@ import pickle
 import re
 import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
+import spacy
 
 class TextProcessor:
     def __init__(self):
         self.vectorizer = None
         self.encoder = None
+        self.nlp = spacy.load("pt_core_news_sm")
         self.load_artifacts()
         
     def load_artifacts(self):
@@ -23,7 +25,15 @@ class TextProcessor:
         # Limpeza básica
         text = text.lower()
         text = re.sub(r'[^\w\s]', '', text)
-        return text
+        
+        # Processamento com Spacy
+        doc = self.nlp(text)
+        tokens = [
+            token.lemma_ 
+            for token in doc 
+            if not token.is_stop and not token.is_punct
+        ]
+        return " ".join(tokens)
 
     def vectorize_text(self, text):
         processed = self.preprocess_text(text)
